@@ -1,4 +1,5 @@
 import cors from 'cors'
+import { CustomError } from '../common/customError'
 
 export const corsMiddleware = () => cors({
     origin: (origin, cb) => {
@@ -10,6 +11,6 @@ export const corsMiddleware = () => cors({
             return cb(null, true)
         }
 
-        return new Error('Not allowed by CORS')
+        return new CustomError('Not allowed by CORS', 403)
     }
 })

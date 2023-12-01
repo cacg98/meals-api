@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import db from './config/database'
+
 import express from 'express'
 
 import { appRouter } from './routes'
@@ -17,7 +18,7 @@ app.use(corsMiddleware())
 app.use('/api/v1', appRouter)
 
 app.use('*', notFoundMiddleware)
-app.use(errorHandlerMiddleware);
+app.use(errorHandlerMiddleware)
 
 app.listen(process.env.PORT, () => {
     console.log('server running on port', process.env.PORT)
