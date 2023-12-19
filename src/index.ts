@@ -1,7 +1,8 @@
 import 'dotenv/config'
-import db from './config/database'
 
 import express from 'express'
+
+import { dbConnect } from './config/database'
 
 import { appRouter } from './routes'
 
@@ -9,7 +10,7 @@ import { corsMiddleware } from './middlewares/cors'
 import { notFoundMiddleware } from './middlewares/notFound'
 import { errorHandlerMiddleware } from './middlewares/errorHandler'
 
-db
+dbConnect()
 
 const app = express()
 app.use(express.json())

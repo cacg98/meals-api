@@ -6,6 +6,10 @@ import { IUser } from "../common/interfaces/user"
 import { CustomError } from "../common/customError"
 
 export async function register(user: IUser) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (!emailRegex.test(user.email)) throw new CustomError('Invalid email', 409)
+
     const userExist = await User.findOne({ email: user.email })
 
     if (userExist) throw new CustomError('Email already used', 409)
@@ -31,6 +35,8 @@ export async function login(user: IUser) {
     const refreshToken = generateToken(existingUser._id.toString(), '1h')
     return { accessToken, refreshToken }
 }
+
+//TODO: refresh token function
 
 function generateToken(userId: string, expiresIn) {
     return jwt.sign({ data: userId }, process.env.TOKEN_SECRET, { expiresIn })
