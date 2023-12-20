@@ -10,3 +10,8 @@ export const login = tryCatchFn( async (req, res, next) => {
     const tokens = await authService.login(req.body)
     res.send(tokens)
 })
+
+export const refreshToken = tryCatchFn( async (req, res, next) => {
+    const tokens = await authService.refreshToken(req.id)
+    res.send(tokens)
+})

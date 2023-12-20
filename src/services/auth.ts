@@ -31,12 +31,16 @@ export async function login(user: IUser) {
 
     if (!isValidPassword) throw new CustomError('Wrong email or password', 409)
     
-    const accessToken = generateToken(existingUser._id.toString(), '15m')
-    const refreshToken = generateToken(existingUser._id.toString(), '1h')
+    const accessToken = generateToken(existingUser._id.toString(), '1h')
+    const refreshToken = generateToken(existingUser._id.toString(), '24h')
     return { accessToken, refreshToken }
 }
 
-//TODO: refresh token function
+export async function refreshToken(id: string) {
+    const accessToken = generateToken(id, '1h')
+    const refreshToken = generateToken(id, '24h')
+    return { accessToken, refreshToken }
+}
 
 function generateToken(userId: string, expiresIn) {
     return jwt.sign({ data: userId }, process.env.TOKEN_SECRET, { expiresIn })
