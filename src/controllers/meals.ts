@@ -1,8 +1,15 @@
+import { Request, Response, NextFunction } from 'express'
 import { tryCatchFn } from '../common/utils'
 import * as mealsService from '../services/meals'
 
-export const getAll = tryCatchFn( async (req, res, next) => {
-    const searchRecipesUrl = 'https://www.recetasnestle.com.ve/busca/resultado?q=berenjena%20carne'
-    const recipes = await mealsService.searchRecipes(searchRecipesUrl)
+export const getByIngredients = tryCatchFn( async (req: Request, res: Response, next: NextFunction) => {
+    const { ingredients } = req.query
+    const recipes = await mealsService.searchRecipes(ingredients)
     res.send(recipes)
+})
+
+export const getRecipe = tryCatchFn( async (req: Request, res: Response, next: NextFunction) => {
+    const { anchor } = req.query
+    const recipe = await mealsService.scrapeRecipe(anchor)
+    res.send(recipe)
 })

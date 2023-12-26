@@ -1,7 +1,11 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 
-export async function searchRecipes(url) {
+const nestleUrl = 'https://www.recetasnestle.com.ve'
+
+export async function searchRecipes(ingredients) {
+  const url = nestleUrl + '/busca/resultado?q=' + ingredients
+
   const response = await axios.get(url)
 
   const $ = cheerio.load(response.data)
@@ -29,7 +33,9 @@ export async function searchRecipes(url) {
   }
 }
 
-export async function scrapeRecipe(url) {
+export async function scrapeRecipe(recipe) {
+  const url = nestleUrl + recipe
+
   const response = await axios.get(url)
 
   const $ = cheerio.load(response.data)
@@ -40,8 +46,12 @@ export async function scrapeRecipe(url) {
   })
 
   const steps = []
-  $('.recipeDetail__stepItem div').each((index, element) => {
-    steps.push($(element).text().trim())
+  $('.recipeDetail__stepItem h2').each((index, element) => {
+    const stepTitle = $(element).text().trim()
+    if (stepTitle.includes('PASO')) {
+      const stepText = $(element).siblings('ul').find('div').text().trim()
+      steps.push(stepText)
+    }
   })
 
   return {
