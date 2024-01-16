@@ -28,9 +28,7 @@ export async function searchRecipes(ingredients) {
     })
   })
 
-  return {
-    recipes        
-  }
+  return recipes
 }
 
 export async function scrapeRecipe(recipe) {
@@ -59,16 +57,3 @@ export async function scrapeRecipe(recipe) {
     steps
   }
 }
-
-// const searchRecipesUrl = 'https://www.recetasnestle.com.ve/busca/resultado?q=berenjena%20carne'
-// searchRecipes(searchRecipesUrl).then((data) => {
-//   console.log(data.recipes)
-// })
-
-// const recipeUrl = 'https://www.recetasnestle.com.ve/recetas/carne-molida'
-// scrapeRecipe(recipeUrl).then((data) => {
-// //   console.log(data.title)
-// //   console.log(data.imageUrl)
-//   console.log(data.ingredients)
-//   console.log(data.steps)
-// })
