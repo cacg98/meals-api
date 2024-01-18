@@ -14,7 +14,7 @@ export async function searchRecipes(ingredients) {
   $('.recipeCard').slice(0, 10).each((index, element) => {
     const name = $(element).find('.name').text().trim()
     const image = $(element).find('.recipeCard__image img').data('src')
-    const anchor = $(element).find('a').attr('href')
+    const anchor = $(element).find('a').attr('href').replace('/recetas/', '')
     const info = []
     $(element).find('.infos').children().each((index, element) => {
       info.push($(element).text().trim().replace(/(\n|\t)/g, ''))
@@ -32,11 +32,43 @@ export async function searchRecipes(ingredients) {
 }
 
 export async function scrapeRecipe(recipe) {
-  const url = nestleUrl + recipe
+  const url = nestleUrl + '/recetas/' + recipe
 
   const response = await axios.get(url)
 
   const $ = cheerio.load(response.data)
+
+  const name = $('.recipeDetail__intro h1').text().trim()
+  const image = $('.recipeDetail__image .image picture img').attr('src')
+
+  const difficulty = $('.recipeDetail__infoItem.recipeDetail__infoItem--difficulty')
+    .contents()
+    .filter(function () {
+      return this.nodeType === 3
+    }).text().trim()
+
+  const serving = $('.recipeDetail__infoItem.recipeDetail__infoItem--serving span')
+    .text().trim()
+
+  const timeElements = $('.recipeDetail__infoItem.recipeDetail__infoItem--time')
+
+  let time: cheerio.Cheerio | string = ''
+  if (timeElements.length > 1) {
+    time = timeElements.eq(1)
+  } else if (timeElements.length === 1) {
+    time = timeElements
+  }
+
+  if (typeof time !== 'string') {
+    time = time
+      .contents()
+      .filter(function () {
+        return this.nodeType === 3
+      })
+      .text()
+      .trim()
+      .replace(/(\n|\t)/g, '')
+  }
 
   const ingredients = []
   $('.recipeDetail__ingredients li').each((index, element) => {
@@ -53,6 +85,11 @@ export async function scrapeRecipe(recipe) {
   })
 
   return {
+    name,
+    image,
+    difficulty,
+    serving,
+    time,
     ingredients,
     steps
   }
