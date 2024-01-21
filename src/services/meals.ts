@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
+import { redisClient } from '..'
 
 const nestleUrl = 'https://www.recetasnestle.com.ve'
 
@@ -32,6 +33,13 @@ export async function searchRecipes(ingredients) {
 }
 
 export async function scrapeRecipe(recipe) {
+
+  const cacheResult = await redisClient.get(recipe)
+  if (cacheResult) {
+    // console.log('cache hit!');
+    return JSON.parse(cacheResult)
+  }
+
   const url = nestleUrl + '/recetas/' + recipe
 
   const response = await axios.get(url)
@@ -84,7 +92,7 @@ export async function scrapeRecipe(recipe) {
     }
   })
 
-  return {
+  const result = {
     name,
     image,
     difficulty,
@@ -93,4 +101,12 @@ export async function scrapeRecipe(recipe) {
     ingredients,
     steps
   }
+
+  // console.log('cache miss!');
+  await redisClient.set(recipe, JSON.stringify(result), {
+    EX: 60,
+    NX: true,
+  })
+
+  return result
 }
