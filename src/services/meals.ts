@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import { redisClient } from '..'
+
+import { redisClient } from '../config/cache'
 
 const nestleUrl = 'https://www.recetasnestle.com.ve'
 
