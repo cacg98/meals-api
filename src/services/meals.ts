@@ -16,7 +16,7 @@ export async function searchRecipes(ingredients) {
   $('.recipeCard').slice(0, 10).each((index, element) => {
     const name = $(element).find('.name').text().trim()
     const image = $(element).find('.recipeCard__image img').data('src')
-    const anchor = $(element).find('a').attr('href').replace('/recetas/', '')
+    const anchor = $(element).find('a').attr('href')
     const info = []
     $(element).find('.infos').children().each((index, element) => {
       info.push($(element).text().trim().replace(/(\n|\t)/g, ''))
@@ -41,7 +41,7 @@ export async function scrapeRecipe(recipe) {
     return JSON.parse(cacheResult)
   }
 
-  const url = nestleUrl + '/recetas/' + recipe
+  const url = nestleUrl + recipe
 
   const response = await axios.get(url)
 
@@ -92,6 +92,11 @@ export async function scrapeRecipe(recipe) {
       steps.push(stepText)
     }
   })
+  if (!steps.length) {
+    $('.recipeDetail__stepItem div').each((index, element) => {
+      steps.push($(element).text().trim())
+    })
+  }
 
   const result = {
     name,
