@@ -79,12 +79,12 @@ export async function scrapeRecipe(recipe) {
       .replace(/(\n|\t)/g, '')
   }
 
-  const ingredients = []
+  const ingredients: string[] = []
   $('.recipeDetail__ingredients li').each((index, element) => {
     ingredients.push($(element).text().trim())
   })
 
-  const steps = []
+  let steps: string[] = []
   $('.recipeDetail__stepItem h2').each((index, element) => {
     const stepTitle = $(element).text().trim()
     if (stepTitle.includes('PASO')) {
@@ -97,6 +97,12 @@ export async function scrapeRecipe(recipe) {
       steps.push($(element).text().trim())
     })
   }
+  steps = steps.map(step => {
+    if (step.slice(0, 2) == step.slice(4, 6)) {
+      return step.slice(4)
+    }
+    return step
+  })
 
   const result = {
     name,
