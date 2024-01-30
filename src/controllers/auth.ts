@@ -3,8 +3,8 @@ import { tryCatchFn } from '../common/utils'
 import * as authService from '../services/auth'
 
 export const register = tryCatchFn( async (req: Request, res: Response, next: NextFunction) => {
-    const newUser = await authService.register(req.body)
-    res.send(newUser)
+    await authService.register(req.body)
+    res.send({})
 })
 
 export const login = tryCatchFn( async (req: Request, res: Response, next: NextFunction) => {

@@ -15,11 +15,10 @@ export async function register(user: IUser) {
     if (userExist) throw new CustomError('Email already used', 409)
 
     const hashPassword = await bcrypt.hash(user.password, 10)
-    const newUser = await User.create({
+    await User.create({
         email: user.email,
         password: hashPassword
     })
-    return newUser
 }
 
 export async function login(user: IUser) {

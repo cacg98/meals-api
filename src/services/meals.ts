@@ -22,12 +22,14 @@ export async function searchRecipes(ingredients) {
       info.push($(element).text().trim().replace(/(\n|\t)/g, ''))
     })
 
-    recipes.push({
-      name,
-      image,
-      anchor,
-      info
-    })
+    if (name && image && anchor) {
+      recipes.push({
+        name,
+        image,
+        anchor,
+        info
+      })
+    }
   })
 
   return recipes

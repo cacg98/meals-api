@@ -7,9 +7,9 @@ export function authorizationMiddleware(req, res, next) {
 
   if (token == null) throw new CustomError('Missing required header: Authorization', 400)
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err: any, id: any) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, (err: any, res: any) => {
     if (err) throw new CustomError('Unauthorized', 401)
-    req.id = id
+    req.id = res.data
     next()
   })
 }
