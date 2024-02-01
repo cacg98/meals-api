@@ -2,10 +2,11 @@ import axios from 'axios'
 import * as cheerio from 'cheerio'
 
 import { redisClient } from '../config/cache'
+import { CustomError } from '../common/customError'
 
 const nestleUrl = 'https://www.recetasnestle.com.ve'
 
-export async function searchRecipes(ingredients) {
+export async function searchRecipes(ingredients: string[]) {
   const url = nestleUrl + '/busca/resultado?q=' + ingredients
 
   const response = await axios.get(url)
@@ -35,7 +36,9 @@ export async function searchRecipes(ingredients) {
   return recipes
 }
 
-export async function scrapeRecipe(recipe) {
+export async function scrapeRecipe(recipe: string) {
+
+  if (!recipe.includes('/recetas/')) throw new CustomError('Bad request', 400)
 
   const cacheResult = await redisClient.get(recipe)
   if (cacheResult) {
