@@ -3,6 +3,13 @@ import { tryCatchFn } from "../common/utils";
 import { CustomRequest } from "../common/interfaces/customRequest";
 import * as favoritesService from "../services/favorites";
 
+export const listFavorites = tryCatchFn(
+  async (req: CustomRequest, res: Response, next: NextFunction) => {
+    const favorites = await favoritesService.listFavorites(req.id);
+    res.send(favorites);
+  }
+);
+
 export const findFavorite = tryCatchFn(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
     const favorite = await favoritesService.findFavorite(

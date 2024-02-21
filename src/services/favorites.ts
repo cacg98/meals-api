@@ -1,7 +1,11 @@
-import mongoose from "mongoose";
-
 import { Favorite } from "../models/favorite";
 import { IFavorite } from "../common/interfaces/favorite";
+
+// TODO paginar lista de favoritos
+
+export async function listFavorites(userId: string) {
+  return await Favorite.find({ user: userId }, { user: 0 });
+}
 
 export async function findFavorite(userId: string, anchor: string) {
   return await Favorite.findOne({ user: userId, anchor });
