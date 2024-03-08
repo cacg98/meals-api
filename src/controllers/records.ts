@@ -20,13 +20,7 @@ export const getRecords = tryCatchFn(
 
 export const createOrUpdateRecord = tryCatchFn(
   async (req: CustomRequest, res: Response, next: NextFunction) => {
-    const { size } = req.query;
-    if (!size) throw new CustomError("Missing queryParam: size", 400);
-    const result = await recordsService.createOrUpdateRecord(
-      req.id,
-      req.body,
-      Number(size)
-    );
-    res.send(result);
+    await recordsService.createOrUpdateRecord(req.id, req.body);
+    res.send({});
   }
 );

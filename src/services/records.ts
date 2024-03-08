@@ -17,11 +17,7 @@ export async function getRecords(userId: string, page: number, size: number) {
   return { data, count };
 }
 
-export async function createOrUpdateRecord(
-  userId: string,
-  record: IRecord,
-  size: number
-) {
+export async function createOrUpdateRecord(userId: string, record: IRecord) {
   const sortedIngredients = record.ingredients.sort();
   const result = await Record.aggregate([
     {
@@ -52,6 +48,4 @@ export async function createOrUpdateRecord(
     record.user = userId;
     await Record.create(record);
   }
-
-  return await getRecords(userId, 0, size);
 }
