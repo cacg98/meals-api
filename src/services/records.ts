@@ -49,3 +49,17 @@ export async function createOrUpdateRecord(userId: string, record: IRecord) {
     await Record.create(record);
   }
 }
+
+export async function deleteRecord(recordId: string) {
+  await Record.deleteOne({ _id: recordId });
+}
+
+export async function deleteRecords(recordsIds: string[]) {
+  for (let index = 0; index < recordsIds.length; index++) {
+    await deleteRecord(recordsIds[index]);
+  }
+}
+
+export async function deleteAllUserRecords(userId: string) {
+  await Record.deleteMany({ user: userId });
+}
