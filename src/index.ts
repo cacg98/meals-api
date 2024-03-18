@@ -7,6 +7,7 @@ import { initRedis } from './config/cache'
 
 import { appRouter } from './routes'
 
+import compression from "compression"
 import { corsMiddleware } from './middlewares/cors'
 import { notFoundMiddleware } from './middlewares/notFound'
 import { errorHandlerMiddleware } from './middlewares/errorHandler'
@@ -15,6 +16,7 @@ dbConnect()
 initRedis()
 
 const app = express()
+app.use(compression());
 app.use(express.json())
 app.use(corsMiddleware())
 
