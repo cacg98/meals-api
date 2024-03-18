@@ -121,7 +121,7 @@ export async function scrapeRecipe(recipe: string) {
 
   // console.log('cache miss!');
   await redisClient.set(recipe, JSON.stringify(result), {
-    EX: 60,
+    EX: 300,
     NX: true,
   })
 
