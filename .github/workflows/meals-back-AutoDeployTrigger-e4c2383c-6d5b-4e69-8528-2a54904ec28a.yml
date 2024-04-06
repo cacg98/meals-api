@@ -43,5 +43,3 @@ jobs:
           imageToBuild: ghcr.io/cacg98/meals-api:${{ github.sha }}
           _buildArgumentsKey_: |
             _buildArgumentsValues_
-
-

@@ -7,6 +7,7 @@ export const corsMiddleware = () =>
       const ACCEPTED_ORIGINS = [
         "http://localhost:4200",
         "https://meals-app-urmy.onrender.com",
+        "https://mango-tree-0eb92790f.5.azurestaticapps.net"
       ];
 
       if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
