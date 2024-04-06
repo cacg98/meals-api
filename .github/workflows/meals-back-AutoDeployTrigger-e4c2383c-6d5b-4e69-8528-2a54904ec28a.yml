@@ -40,7 +40,7 @@ jobs:
           registryPassword: ${{ secrets.MEALSBACK_REGISTRY_PASSWORD }}
           containerAppName: meals-back
           resourceGroup: meals-group
-          imageToBuild: ghcr.io/meals-back:${{ github.sha }}
+          imageToBuild: ghcr.io/cacg98/meals-api:${{ github.sha }}
           _buildArgumentsKey_: |
             _buildArgumentsValues_
 
