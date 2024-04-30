@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Expose port 3000 (or any other port your API listens on)
-EXPOSE 3000
+EXPOSE $RAILWAY_TCP_PROXY_PORT
 
 # Start the API server
 CMD ["npm", "start"]
