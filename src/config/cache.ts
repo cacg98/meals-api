@@ -4,17 +4,15 @@ export let redisClient
 
 export const initRedis = async () => {
   redisClient = createClient({
-    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-    password: process.env.REDIS_PASSWORD
+    socket: {
+      host: 'meals-app.eastus.cloudapp.azure.com',
+      port: 6379,
+    }
   })
 
   redisClient.on("ready", () => console.log('Redis Client Ready'))
 
-  redisClient.on("error", (error) => {
-    console.log(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
-    console.error(process.env.REDIS_PASSWORD)
-    console.error(error)
-  })
+  redisClient.on("error", (error) => console.error(error))
 
   await redisClient.connect()
 }

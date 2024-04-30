@@ -16,7 +16,7 @@ export async function searchRecipes(ingredients: string[]) {
   const recipes = []
   $('.recipeCard').slice(0, 10).each((index, element) => {
     const name = $(element).find('.name').text().trim()
-    const image = $(element).find('.recipeCard__image img').data('src')
+    const image = $(element).find('.recipeCard__image img').attr('src')
     const anchor = $(element).find('a').attr('href')
     const info = []
     $(element).find('.infos').children().each((index, element) => {
