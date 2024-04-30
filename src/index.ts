@@ -26,5 +26,5 @@ app.use('*', notFoundMiddleware)
 app.use(errorHandlerMiddleware)
 
 app.listen(process.env.PORT, () => {
-    console.log('server running on port', process.env.PORT)
+    console.log('server running on port', process.env.RAILWAY_TCP_PROXY_PORT)
 })
