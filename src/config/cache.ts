@@ -5,8 +5,8 @@ export let redisClient
 export const initRedis = async () => {
   redisClient = createClient({
     socket: {
-      host: 'meals-app.eastus.cloudapp.azure.com',
-      port: 6379,
+      host: process.env.REDIS_HOST,
+      port: Number(process.env.REDIS_PORT),
     }
   })
 
