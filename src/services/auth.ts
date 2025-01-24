@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { MailtrapClient } from "mailtrap";
+// import { MailtrapClient } from "mailtrap";
 
 import { User } from "../models/user";
 import { IUser } from "../common/interfaces/user";

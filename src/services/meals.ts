@@ -14,14 +14,13 @@ export async function searchRecipes(ingredients: string[]) {
   const $ = cheerio.load(response.data)
 
   const recipes = []
-  $('.recipeCard').slice(0, 10).each((index, element) => {
-    const name = $(element).find('.name').text().trim()
-    const image = $(element).find('.recipeCard__image img').attr('src')
-    const anchor = $(element).find('a').attr('href')
-    const info = []
-    $(element).find('.infos').children().each((index, element) => {
-      info.push($(element).text().trim().replace(/(\n|\t)/g, ''))
-    })
+  $('.cardRecipe').slice(0, 10).each((index, element) => {
+    const name = $(element).find('.cardRecipe__title').text().trim()
+    const image = $(element).find('.cardRecipe__image img').attr('src')
+    const anchor = $(element).attr('href')
+    const time = $(element).find('.infos-time span').text().trim()
+    const difficulty = $(element).find('.infos-difficulty span').text().trim()
+    const info = [time, difficulty]
 
     if (name && image && anchor) {
       recipes.push({
@@ -52,53 +51,30 @@ export async function scrapeRecipe(recipe: string) {
 
   const $ = cheerio.load(response.data)
 
-  const name = $('.recipeDetail__intro h1').text().trim()
-  const image = $('.recipeDetail__image .image picture img').attr('src')
+  const name = $('.recipe__texts h1').text().trim()
+  const image = $('.recipe__image .image picture img').attr('src')
 
-  const difficulty = $('.recipeDetail__infoItem.recipeDetail__infoItem--difficulty')
-    .contents()
-    .filter(function () {
-      return this.nodeType === 3
-    }).text().trim()
+  const difficulty = $('.recipe__main .informations .difficulty .difficulty__text').text().trim()
 
-  const serving = $('.recipeDetail__infoItem.recipeDetail__infoItem--serving span')
-    .text().trim()
+  const serving = $('.recipe__main .ingredients .servings p').text().split(':')[1].trim()
 
-  const timeElements = $('.recipeDetail__infoItem.recipeDetail__infoItem--time')
-
-  let time: cheerio.Cheerio | string = ''
-  if (timeElements.length > 1) {
-    time = timeElements.eq(1)
-  } else if (timeElements.length === 1) {
-    time = timeElements
-  }
-
-  if (typeof time !== 'string') {
-    time = time
-      .contents()
-      .filter(function () {
-        return this.nodeType === 3
-      })
-      .text()
-      .trim()
-      .replace(/(\n|\t)/g, '')
-  }
+  const time = $('.recipe__main .informations .time span').text().trim()
 
   const ingredients: string[] = []
-  $('.recipeDetail__ingredients li').each((index, element) => {
+  $('.recipe__main .ingredients ul li label span span').each((index, element) => {
     ingredients.push($(element).text().trim())
   })
 
   let steps: string[] = []
-  $('.recipeDetail__stepItem h2').each((index, element) => {
+  $('.cookSteps__item h2').each((index, element) => {
     const stepTitle = $(element).text().trim()
     if (stepTitle.includes('PASO')) {
-      const stepText = $(element).siblings('ul').find('div').text().trim()
+      const stepText = $(element).siblings('ul').find('span').text().trim()
       steps.push(stepText)
     }
   })
   if (!steps.length) {
-    $('.recipeDetail__stepItem div').each((index, element) => {
+    $('.cookSteps__item span').each((index, element) => {
       steps.push($(element).text().trim())
     })
   }
