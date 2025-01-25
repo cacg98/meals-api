@@ -20,14 +20,14 @@ export async function searchRecipes(ingredients: string[]) {
     const anchor = $(element).attr('href')
     const time = $(element).find('.infos-time span').text().trim()
     const difficulty = $(element).find('.infos-difficulty span').text().trim()
-    const info = [time, difficulty]
 
     if (name && image && anchor) {
       recipes.push({
         name,
         image,
         anchor,
-        info
+        time,
+        difficulty
       })
     }
   })
